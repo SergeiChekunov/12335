@@ -1,0 +1,406 @@
+-- ETSI TS 129 002 V10.4.0 (2011-10)
+-- 17.7.2  Operation and maintenance data types 
+
+MAP-OM-DataTypes { 
+   itu-t identified-organization (4) etsi (0) mobileDomain (0) 
+   gsm-Network (1) modules (3) map-OM-DataTypes (12) version13 (13)} 
+ 
+DEFINITIONS 
+ 
+IMPLICIT TAGS 
+ 
+::= 
+ 
+BEGIN 
+ 
+--unused:EXPORTS 
+--unused:	ActivateTraceModeArg, 
+--unused:	ActivateTraceModeRes, 
+--unused:	DeactivateTraceModeArg, 
+--unused:	DeactivateTraceModeRes, 
+--unused:	TracePropagationList 
+--unused:	; 
+ 
+IMPORTS 
+	--unused:AddressString, 
+	IMSI--unused:, 
+	--unused:GSN-Address, 
+	--unused:GlobalCellId, 
+	--unused:E-UTRAN-CGI, 
+	--unused:TA-Id, 
+	--unused:RAIdentity, 
+	--unused:LAIFixedLength 
+FROM MAP-CommonDataTypes { 
+	itu-t identified-organization (4) etsi (0) mobileDomain (0) 
+	gsm-Network (1) modules (3) map-CommonDataTypes (18) version13 (13)} 
+ 
+--unused:	ExtensionContainer 
+--unused:FROM MAP-ExtensionDataTypes { 
+--unused:	itu-t identified-organization (4) etsi (0) mobileDomain (0) 
+--unused:	gsm-Network (1) modules (3) map-ExtensionDataTypes (21) version13 (13)} 
+	; 
+ 
+ActivateTraceModeArg ::= SEQUENCE { 
+	imsi    [0] IMSI   OPTIONAL, 
+	traceReference  [1] TraceReference, 
+	traceType  [2] TraceType,   
+	--unused:omc-Id   [3] AddressString  OPTIONAL, 
+	--unused:extensionContainer  [4] ExtensionContainer  OPTIONAL, 
+	...--unused:, 
+	--unused:traceReference2  [5] TraceReference2  OPTIONAL, 
+	--unused:traceDepthList  [6] TraceDepthList  OPTIONAL, 
+	--unused:traceNE-TypeList  [7] TraceNE-TypeList  OPTIONAL, 
+	--unused:traceInterfaceList  [8] TraceInterfaceList  OPTIONAL, 
+	--unused:traceEventList  [9] TraceEventList  OPTIONAL, 
+	--unused:traceCollectionEntity  [10] GSN-Address  OPTIONAL, 
+	--unused:mdt-Configuration  [11] MDT-Configuration  OPTIONAL 
+	} 
+ 
+--unused:MDT-Configuration  ::= SEQUENCE { 
+--unused:	jobType   JobType, 
+--unused:	areaScope  AreaScope  OPTIONAL,   
+--unused:	listOfMeasurements  ListOfMeasurements  OPTIONAL, 
+--unused:	reportingTrigger  [0] ReportingTrigger  OPTIONAL, 
+--unused:	reportInterval  ReportInterval  OPTIONAL, 
+--unused:	reportAmount  [1] ReportAmount  OPTIONAL, 
+--unused:	eventThresholdRSRP  EventThresholdRSRP  OPTIONAL, 
+--unused:	eventThresholdRSRQ  [2] EventThresholdRSRQ  OPTIONAL, 
+--unused:	loggingInterval  [3] LoggingInterval  OPTIONAL, 
+--unused:	loggingDuration  [4] LoggingDuration  OPTIONAL, 
+--unused:	extensionContainer  [5] ExtensionContainer  OPTIONAL, 
+--unused:	... } 
+--unused: 
+--unused:JobType  ::= ENUMERATED { 
+--unused:	immediate-MDT-only (0), 
+--unused:	logged-MDT-only (1), 
+--unused:	trace-only (2), 
+--unused:	immediate-MDT-and-trace (3)} 
+--unused: 
+--unused:AreaScope  ::= SEQUENCE { 
+--unused:	cgi-List   [0] CGI-List  OPTIONAL, 
+--unused:	e-utran-cgi-List  [1] E-UTRAN-CGI-List  OPTIONAL, 
+--unused:	routingAreaId-List  [2] RoutingAreaId-List  OPTIONAL, 
+--unused:	locationAreaId-List  [3] LocationAreaId-List  OPTIONAL, 
+--unused:	trackingAreaId-List  [4] TrackingAreaId-List  OPTIONAL, 
+--unused:	extensionContainer  [5] ExtensionContainer  OPTIONAL, 
+--unused:	... } 
+--unused: 
+--unused:CGI-List ::=  SEQUENCE SIZE (1..32) OF 
+--unused:	GlobalCellId 
+--unused: 
+--unused:E-UTRAN-CGI-List ::= SEQUENCE SIZE (1..32) OF 
+--unused:	E-UTRAN-CGI 
+--unused: 
+--unused:RoutingAreaId-List ::=  SEQUENCE SIZE (1..8) OF 
+--unused:	RAIdentity 
+--unused: 
+--unused:LocationAreaId-List ::= SEQUENCE SIZE (1..8) OF 
+--unused:	LAIFixedLength 
+--unused: 
+--unused:TrackingAreaId-List ::= SEQUENCE SIZE (1..8) OF 
+--unused:	TA-Id 
+--unused:ListOfMeasurements ::= OCTET STRING (SIZE (4)) 
+--unused:	- - Octets are coded as described in 3GPP TS 32.422. 
+--unused: 
+--unused:ReportingTrigger ::= OCTET STRING (SIZE (1)) 
+--unused:	- - Octet is coded as described in 3GPP TS 32.422. 
+--unused: 
+--unused:ReportInterval  ::= ENUMERATED { 
+--unused:	umts250ms (0), 
+--unused:	umts500ms (1), 
+--unused:	umts1000ms (2), 
+--unused:	umts2000ms (3), 
+--unused:	umts3000ms (4), 
+--unused:	umts4000ms (5), 
+--unused:	umts6000ms (6), 
+--unused:	umts8000ms (7), 
+--unused:	umts12000ms (8), 
+--unused:	umts16000ms (9), 
+--unused:	umts20000ms (10), 
+--unused:	umts24000ms (11), 
+--unused:	umts28000ms (12), 
+--unused:	umts32000ms (13), 
+--unused:	umts64000ms (14), 
+--unused:	lte120ms (15), 
+--unused:	lte240ms (16), 
+--unused:	lte480ms (17), 
+--unused:	lte640ms (18), 
+--unused:	lte1024ms (19), 
+--unused:	lte2048ms (20), 
+--unused:	lte5120ms (21), 
+--unused:	lte10240ms (22), 
+--unused:	lte1min (23), 
+--unused:	lte6min (24), 
+--unused:	lte12min (25), 
+--unused:	lte30min (26), 
+--unused:	lte60min (27)} 
+--unused: 
+--unused: 
+--unused:ReportAmount  ::= ENUMERATED { 
+--unused:	d1 (0), 
+--unused:	d2 (1), 
+--unused:	d4 (2), 
+--unused:	d8 (3), 
+--unused:	d16 (4), 
+--unused:	d32 (5), 
+--unused:	d64 (6), 
+--unused:	infinity (7)} 
+--unused: 
+--unused:EventThresholdRSRP ::= INTEGER 
+--unused:	(0..97) 
+--unused: 
+--unused:EventThresholdRSRQ ::= INTEGER 
+--unused:	(0..34) 
+--unused: 
+--unused:LoggingInterval ::= ENUMERATED { 
+--unused:	d1dot28 (0), 
+--unused:	d2dot56 (1), 
+--unused:	d5dot12 (2), 
+--unused:	d10dot24 (3), 
+--unused:	d20dot48 (4), 
+--unused:	d30dot72 (5), 
+--unused:	d40dot96 (6), 
+--unused:	d61dot44 (7)} 
+--unused: 
+--unused:LoggingDuration ::= ENUMERATED { 
+--unused:	d600sec (0), 
+--unused:	d1200sec (1), 
+--unused:	d2400sec (2), 
+--unused:	d3600sec (3), 
+--unused:	d5400sec (4), 
+--unused:	d7200sec (5)} 
+ 
+TraceReference  ::= OCTET STRING (SIZE (1..2))  
+ 
+--unused:TraceReference2 ::= OCTET STRING (SIZE (3)) 
+ 
+--unused:TraceRecordingSessionReference ::= OCTET STRING (SIZE (2)) 
+ 
+TraceType  ::= INTEGER 
+	(0..255) 
+	-- Trace types are fully defined in  3GPP TS 52.008. [61] 
+ 
+--unused:TraceDepthList  ::= SEQUENCE { 
+--unused:	msc-s-TraceDepth  [0] TraceDepth  OPTIONAL, 
+--unused:	mgw-TraceDepth  [1] TraceDepth  OPTIONAL, 
+--unused:	sgsn-TraceDepth  [2] TraceDepth  OPTIONAL, 
+--unused:	ggsn-TraceDepth  [3] TraceDepth  OPTIONAL, 
+--unused:	rnc-TraceDepth  [4] TraceDepth  OPTIONAL, 
+--unused:	bmsc-TraceDepth  [5] TraceDepth  OPTIONAL, 
+--unused:	... , 
+--unused:	mme-TraceDepth  [6] TraceDepth  OPTIONAL, 
+--unused:	sgw-TraceDepth  [7] TraceDepth  OPTIONAL, 
+--unused:	pgw-TraceDepth  [8] TraceDepth  OPTIONAL, 
+--unused:	eNB-TraceDepth  [9] TraceDepth  OPTIONAL } 
+--unused: 
+--unused:TraceDepth ::= ENUMERATED { 
+--unused:	minimum (0), 
+--unused:	medium (1), 
+--unused:	maximum (2), 
+--unused:	...} 
+--unused:- - The value medium is applicable only for RNC. For other network elements, if value medium 
+--unused:- - is received, value minimum shall be applied. 
+--unused: 
+--unused:TraceNE-TypeList ::= BIT STRING { 
+--unused:	msc-s (0), 
+--unused:	mgw (1), 
+--unused:	sgsn (2), 
+--unused:	ggsn (3), 
+--unused:	rnc (4), 
+--unused:	bm-sc (5) , 
+--unused:	mme (6), 
+--unused:	sgw (7), 
+--unused:	pgw (8), 
+--unused:	eNB (9)} (SIZE (6..16)) 
+--unused:- - Other bits than listed above shall be discarded. 
+ 
+--unused:TraceInterfaceList ::= SEQUENCE { 
+--unused:	msc-s-List  [0] MSC-S-InterfaceList  OPTIONAL, 
+--unused:	mgw-List   [1] MGW-InterfaceList  OPTIONAL, 
+--unused:	sgsn-List  [2] SGSN-InterfaceList OPTIONAL,   
+--unused:	ggsn-List  [3] GGSN-InterfaceList OPTIONAL,   
+--unused:	rnc-List   [4] RNC-InterfaceList  OPTIONAL, 
+--unused:	bmsc-List  [5] BMSC-InterfaceList OPTIONAL,    
+--unused:	..., 
+--unused:	mme-List   [6] MME-InterfaceList  OPTIONAL, 
+--unused:	sgw-List   [7] SGW-InterfaceList  OPTIONAL, 
+--unused:	pgw-List   [8] PGW-InterfaceList  OPTIONAL, 
+--unused:	eNB-List   [9] ENB-InterfaceList  OPTIONAL} 
+--unused: 
+--unused:MSC-S-InterfaceList ::= BIT STRING { 
+--unused:	a (0), 
+--unused:	iu (1), 
+--unused:	mc (2), 
+--unused:	map-g (3), 
+--unused:	map-b (4), 
+--unused:	map-e (5), 
+--unused:	map-f (6), 
+--unused:	cap (7), 
+--unused:	map-d (8), 
+--unused:	map-c (9)} (SIZE (10..16)) 
+--unused:- - Other bits than listed above shall be discarded. 
+--unused: 
+--unused:MGW-InterfaceList  ::= BIT STRING { 
+--unused:	mc (0), 
+--unused:	nb-up (1), 
+--unused:	iu-up (2)} (SIZE (3..8)) 
+--unused:- - Other bits than listed above shall be discarded. 
+--unused: 
+--unused:SGSN-InterfaceList ::= BIT STRING { 
+--unused:	gb (0), 
+--unused:	iu (1), 
+--unused:	gn (2), 
+--unused:	map-gr (3), 
+--unused:	map-gd (4), 
+--unused:	map-gf (5), 
+--unused:	gs (6), 
+--unused:	ge (7), 
+--unused:	s3 (8), 
+--unused:	s4 (9), 
+--unused:	s6d (10)} (SIZE (8..16)) 
+--unused:- - Other bits than listed above shall be discarded. 
+--unused: 
+--unused:GGSN-InterfaceList ::= BIT STRING { 
+--unused:	gn (0), 
+--unused:	gi (1), 
+--unused:	gmb (2)} (SIZE (3..8)) 
+--unused:- - Other bits than listed above shall be discarded. 
+--unused: 
+--unused:RNC-InterfaceList  ::= BIT STRING { 
+--unused:	iu (0), 
+--unused:	iur (1), 
+--unused:	iub (2), 
+--unused:	uu (3)} (SIZE (4..8)) 
+--unused:- - Other bits than listed above shall be discarded. 
+--unused: 
+--unused:BMSC-InterfaceList ::= BIT STRING { 
+--unused:	gmb (0)} (SIZE (1..8)) 
+--unused:- - Other bits than listed above shall be discarded. 
+--unused: 
+--unused:MME-InterfaceList  ::= BIT STRING { 
+--unused:	s1-mme (0), 
+--unused:	s3 (1), 
+--unused:	s6a (2), 
+--unused:	s10 (3), 
+--unused:	s11 (4)} (SIZE (5..8)) 
+--unused:- - Other bits than listed above shall be discarded. 
+--unused: 
+--unused:SGW-InterfaceList  ::= BIT STRING { 
+--unused:	s4 (0), 
+--unused:	s5 (1), 
+--unused:	s8b (2), 
+--unused:	s11 (3), 
+--unused:	gxc (4)} (SIZE (5..8)) 
+--unused:- - Other bits than listed above shall be discarded. 
+--unused: 
+--unused:PGW-InterfaceList  ::= BIT STRING { 
+--unused:	s2a (0), 
+--unused:	s2b (1), 
+--unused:	s2c (2), 
+--unused:	s5 (3), 
+--unused:	s6b (4), 
+--unused:	gx (5), 
+--unused:	s8b (6), 
+--unused:	sgi (7)} (SIZE (8..16)) 
+--unused:- - Other bits than listed above shall be discarded. 
+--unused: 
+--unused:ENB-InterfaceList  ::= BIT STRING { 
+--unused:	s1-mme (0), 
+--unused:	x2 (1), 
+--unused:	uu (2)} (SIZE (3..8)) 
+--unused:- - Other bits than listed above shall be discarded. 
+ 
+--unused:TraceEventList  ::= SEQUENCE { 
+--unused:	msc-s-List  [0] MSC-S-EventList  OPTIONAL, 
+--unused:	mgw-List   [1] MGW-EventList  OPTIONAL, 
+--unused:	sgsn-List  [2] SGSN-EventList OPTIONAL,   
+--unused:	ggsn-List  [3] GGSN-EventList OPTIONAL,   
+--unused:	bmsc-List  [4] BMSC-EventList OPTIONAL,    
+--unused:	..., 
+--unused:	mme-List   [5] MME-EventList  OPTIONAL, 
+--unused:	sgw-List   [6] SGW-EventList  OPTIONAL, 
+--unused:	pgw-List   [7] PGW-EventList  OPTIONAL} 
+--unused: 
+--unused:MSC-S-EventList ::= BIT STRING { 
+--unused:	mo-mtCall (0), 
+--unused:	mo-mt-sms (1), 
+--unused:	lu-imsiAttach-imsiDetach (2), 
+--unused:	handovers (3), 
+--unused:	ss (4)} (SIZE (5..16)) 
+--unused:- - Other bits than listed above shall be discarded. 
+--unused: 
+--unused:MGW-EventList ::= BIT STRING { 
+--unused:	context (0)} (SIZE (1..8)) 
+--unused:- - Other bits than listed above shall be discarded. 
+--unused: 
+--unused:SGSN-EventList  ::= BIT STRING { 
+--unused:	pdpContext (0), 
+--unused:	mo-mt-sms (1), 
+--unused:	rau-gprsAttach-gprsDetach (2), 
+--unused:	mbmsContext (3)} (SIZE (4..16)) 
+--unused:- - Other bits than listed above shall be discarded. 
+--unused: 
+--unused:GGSN-EventList  ::= BIT STRING { 
+--unused:	pdpContext (0), 
+--unused:	mbmsContext (1)} (SIZE (2..8)) 
+--unused:- - Other bits than listed above shall be discarded. 
+--unused: 
+--unused:BMSC-EventList  ::= BIT STRING { 
+--unused:	mbmsMulticastServiceActivation (0)} (SIZE (1..8)) 
+--unused:- - Other bits than listed above shall be discarded. 
+--unused: 
+--unused:MME-EventList ::= BIT STRING { 
+--unused:	ue-initiatedPDNconectivityRequest (0), 
+--unused:	serviceRequestts (1), 
+--unused:	initialAttachTrackingAreaUpdateDetach (2), 
+--unused:	ue-initiatedPDNdisconnection (3), 
+--unused:	bearerActivationModificationDeletion (4), 
+--unused:	handover (5)} (SIZE (6..8)) 
+--unused:- - Other bits than listed above shall be discarded. 
+--unused: 
+--unused:SGW-EventList ::= BIT STRING { 
+--unused:	pdn-connectionCreation (0), 
+--unused:	pdn-connectionTermination (1), 
+--unused:	bearerActivationModificationDeletion (2)} (SIZE (3..8)) 
+--unused:- - Other bits than listed above shall be discarded. 
+--unused: 
+--unused:PGW-EventList ::= BIT STRING { 
+--unused:	pdn-connectionCreation (0), 
+--unused:	pdn-connectionTermination (1), 
+--unused:	bearerActivationModificationDeletion (2)} (SIZE (3..8)) 
+--unused:- - Other bits than listed above shall be discarded. 
+ 
+--unused:TracePropagationList ::= SEQUENCE { 
+--unused:	traceReference  [0] TraceReference  OPTIONAL, 
+--unused:	traceType  [1] TraceType OPTIONAL,   
+--unused:	traceReference2  [2] TraceReference2  OPTIONAL, 
+--unused:	traceRecordingSessionReference  [3] TraceRecordingSessionReference OPTIONAL, 
+--unused:	rnc-TraceDepth  [4] TraceDepth  OPTIONAL, 
+--unused:	rnc-InterfaceList  [5] RNC-InterfaceList  OPTIONAL, 
+--unused:	msc-s-TraceDepth  [6] TraceDepth  OPTIONAL, 
+--unused:	msc-s-InterfaceList  [7] MSC-S-InterfaceList  OPTIONAL, 
+--unused:	msc-s-EventList  [8] MSC-S-EventList  OPTIONAL, 
+--unused:	mgw-TraceDepth  [9] TraceDepth  OPTIONAL, 
+--unused:	mgw-InterfaceList  [10] MGW-InterfaceList  OPTIONAL, 
+--unused:	mgw-EventList  [11] MGW-EventList  OPTIONAL, 
+--unused:	...} 
+ 
+--unused:ActivateTraceModeRes ::= SEQUENCE { 
+--unused:	extensionContainer  [0] ExtensionContainer  OPTIONAL, 
+--unused:	..., 
+--unused:	traceSupportIndicator  [1] NULL   OPTIONAL 
+--unused:	} 
+ 
+DeactivateTraceModeArg  ::= SEQUENCE { 
+	imsi    [0] IMSI   OPTIONAL, 
+	traceReference  [1] TraceReference, 
+	--unused:extensionContainer  [2] ExtensionContainer  OPTIONAL, 
+	...--unused:, 
+	--unused:traceReference2  [3] TraceReference2  OPTIONAL 
+	} 
+	
+--unused:DeactivateTraceModeRes  ::= SEQUENCE { 
+--unused:	extensionContainer  [0] ExtensionContainer  OPTIONAL, 
+--unused:	...} 
+ 
+END 

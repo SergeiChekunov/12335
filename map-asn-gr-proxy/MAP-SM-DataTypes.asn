@@ -1,0 +1,287 @@
+-- ETSI TS 129 002 V10.4.0 (2011-10)
+-- 17.7.6 Short message data types
+
+MAP-SM-DataTypes { 
+   itu-t identified-organization (4) etsi (0) mobileDomain (0) 
+   gsm-Network (1) modules (3) map-SM-DataTypes (16) version13 (13)} 
+
+DEFINITIONS 
+
+IMPLICIT TAGS 
+
+::= 
+
+BEGIN 
+
+--unused:EXPORTS 
+--unused:    RoutingInfoForSM-Arg, 
+--unused:    RoutingInfoForSM-Res, 
+--unused:    MO-ForwardSM-Arg, 
+--unused:    MO-ForwardSM-Res, 
+--unused:    MT-ForwardSM-Arg, 
+--unused:    MT-ForwardSM-Res, 
+--unused:    ReportSM-DeliveryStatusArg, 
+--unused:    ReportSM-DeliveryStatusRes, 
+--unused:    AlertServiceCentreArg, 
+--unused:    InformServiceCentreArg, 
+--unused:    ReadyForSM-Arg, 
+--unused:    ReadyForSM-Res, 
+--unused:    SM-DeliveryOutcome, 
+--unused:    AlertReason, 
+--unused:    Additional-Number, 
+--unused:    MT-ForwardSM-VGCS-Arg, 
+--unused:    MT-ForwardSM-VGCS-Res 
+--unused:; 
+
+IMPORTS 
+    AddressString, 
+    ISDN-AddressString, 
+    SignalInfo, 
+    IMSI, 
+    LMSI --unused:, 
+    --unused:ASCI-CallReference, 
+    --unused:Time 
+
+FROM MAP-CommonDataTypes { 
+    itu-t identified-organization (4) etsi (0) mobileDomain (0) 
+    gsm-Network (1) modules (3) map-CommonDataTypes (18) version13 (13)} 
+
+--unused:     AbsentSubscriberDiagnosticSM 
+--unused:FROM MAP-ER-DataTypes { 
+--unused:    itu-t identified-organization (4) etsi (0) mobileDomain (0) 
+--unused:    gsm-Network (1) modules (3) map-ER-DataTypes (17) version13 (13)} 
+
+     ExtensionContainer 
+FROM MAP-ExtensionDataTypes { 
+    itu-t identified-organization (4) etsi (0) mobileDomain (0) 
+    gsm-Network (1) modules (3) map-ExtensionDataTypes (21) version13 (13)} 
+; 
+
+RoutingInfoForSM-Arg ::= SEQUENCE { 
+    msisdn                    [0] ISDN-AddressString, 
+    sm-RP-PRI                 [1] BOOLEAN,               --unused
+    serviceCentreAddress      [2] AddressString, 
+    extensionContainer        [6] ExtensionContainer      OPTIONAL, 
+    ..., 
+    gprsSupportIndicator      [7]   NULL                  OPTIONAL --unused:, 
+    --unused:- - gprsSupportIndicator is set only if the SMS-GMSC supports 
+    --unused:- - receiving of two numbers from the HLR 
+    --unused:sm-RP-MTI                 [8] SM-RP-MTI               OPTIONAL, 
+    --unused:sm-RP-SMEA                [9] SM-RP-SMEA              OPTIONAL, 
+    --unused:sm-deliveryNotIntended    [10] SM-DeliveryNotIntended OPTIONAL, 
+    --unused:ip-sm-gwGuidanceIndicator [11] NULL                   OPTIONAL-- } 
+
+--unused:SM-DeliveryNotIntended ::= ENUMERATED { 
+--unused:    onlyIMSI-requested  (0), 
+--unused:    onlyMCC-MNC-requested  (1), 
+--unused:    ...} 
+
+--unused:SM-RP-MTI ::= INTEGER (0..10) 
+    -- 0 SMS Deliver 
+    -- 1 SMS Status Report 
+    -- other values are reserved for future use and shall be discarded if 
+    -- received 
+
+--unused:SM-RP-SMEA ::= OCTET STRING (SIZE (1..12)) 
+    -- this parameter contains an address field which is encoded 
+    -- as defined in 3GPP TS 23.040. An address field contains 3 elements : 
+    --         address-length 
+    --         type-of-address 
+    --         address-value 
+
+RoutingInfoForSM-Res ::= SEQUENCE { 
+    imsi                 IMSI, 
+    locationInfoWithLMSI [0] LocationInfoWithLMSI,       --unused
+    --unused:extensionContainer   [4] ExtensionContainer    OPTIONAL, 
+    ...--unused:,                                           
+    --unused:ip-sm-gwGuidance     [5] IP-SM-GW-Guidance     OPTIONAL-- } 
+
+IP-SM-GW-Guidance ::= SEQUENCE { 
+    minimumDeliveryTimeValue     SM-DeliveryTimerValue, 
+    recommendedDeliveryTimeValue SM-DeliveryTimerValue, 
+    extensionContainer           ExtensionContainer OPTIONAL, 
+    ...} 
+
+LocationInfoWithLMSI ::= SEQUENCE { 
+    networkNode-Number            [1] ISDN-AddressString, 
+    lmsi                          LMSI                            OPTIONAL, 
+    extensionContainer            ExtensionContainer              OPTIONAL, 
+    ..., 
+    gprsNodeIndicator             [5]   NULL                      OPTIONAL, 
+    -- gprsNodeIndicator is set only if the SGSN number is sent as the 
+    -- Network Node Number 
+    additional-Number             [6] Additional-Number           OPTIONAL 
+    -- NetworkNode-number can be either msc-number or sgsn-number or IP-SM-GW 
+    -- number or SMS Router number 
+    } 
+
+Additional-Number ::= CHOICE { 
+    msc-Number                    [0] ISDN-AddressString, 
+    sgsn-Number                   [1] ISDN-AddressString} 
+    -- additional-number can be either msc-number or sgsn-number 
+    -- if received networkNode-number is msc-number then the 
+    -- additional number is sgsn-number 
+    -- if received networkNode-number is sgsn-number then the 
+    -- additional number is msc-number 
+
+MO-ForwardSM-Arg ::= SEQUENCE { 
+    sm-RP-DA                      SM-RP-DA, 
+    sm-RP-OA                      SM-RP-OA, 
+    sm-RP-UI                      SignalInfo, 
+    extensionContainer             ExtensionContainer              OPTIONAL, 
+    ... , 
+    imsi                          IMSI                             OPTIONAL } 
+
+MO-ForwardSM-Res ::= SEQUENCE { 
+    sm-RP-UI                      SignalInfo                       OPTIONAL, 
+    --unused:extensionContainer             ExtensionContainer              OPTIONAL, 
+    ...} 
+
+MT-ForwardSM-Arg ::= SEQUENCE { 
+    sm-RP-DA                      SM-RP-DA, 
+    sm-RP-OA                      SM-RP-OA, 
+    sm-RP-UI                      SignalInfo, 
+    moreMessagesToSend            NULL                            OPTIONAL, 
+    --unused:extensionContainer            ExtensionContainer              OPTIONAL, 
+    ... --unused:, 
+    --unused:smDeliveryTimer               SM-DeliveryTimerValue           OPTIONAL, 
+    --unused:smDeliveryStartTime           Time                            OPTIONAL-- } 
+   -- SM-DeliveryTimerValue contains the value used by the SMS-GMSC 
+
+MT-ForwardSM-Res ::= SEQUENCE { 
+    sm-RP-UI                      SignalInfo                      OPTIONAL, 
+    --unused:extensionContainer            ExtensionContainer              OPTIONAL, 
+    ...} 
+
+SM-RP-DA ::= CHOICE { 
+    imsi                          [0] IMSI, 
+    lmsi                          [1] LMSI, 
+    serviceCentreAddressDA        [4] AddressString, 
+    noSM-RP-DA                    [5] NULL} 
+
+SM-RP-OA ::= CHOICE { 
+    msisdn                        [2] ISDN-AddressString, 
+    serviceCentreAddressOA        [4] AddressString, 
+    noSM-RP-OA                    [5] NULL} 
+
+SM-DeliveryTimerValue ::= INTEGER (30..600) 
+
+ReportSM-DeliveryStatusArg ::= SEQUENCE { 
+    msisdn                                 ISDN-AddressString, 
+    serviceCentreAddress                   AddressString,
+    sm-DeliveryOutcome                     SM-DeliveryOutcome OPTIONAL,
+    --unused:absentSubscriberDiagnosticSM           [0] AbsentSubscriberDiagnosticSM 
+    --unused:                                                                          OPTIONAL, 
+    --unused:extensionContainer                     [1] ExtensionContainer             OPTIONAL, 
+    ...--unused:, 
+    --unused:gprsSupportIndicator                   [2]   NULL                         OPTIONAL, 
+    --unused:- - gprsSupportIndicator is set only if the SMS-GMSC supports 
+    --unused:- - handling of two delivery outcomes 
+    --unused:deliveryOutcomeIndicator               [3]  NULL                          OPTIONAL, 
+    --unused:- - DeliveryOutcomeIndicator is set when the SM-DeliveryOutcome 
+    --unused:- - is for GPRS 
+    --unused:additionalSM-DeliveryOutcome           [4]  SM-DeliveryOutcome            OPTIONAL, 
+    --unused:- - If received, additionalSM-DeliveryOutcome is for GPRS 
+    --unused:- - If DeliveryOutcomeIndicator is set, then AdditionalSM-DeliveryOutcome shall be absent 
+    --unused:additionalAbsentSubscriberDiagnosticSM [5]  AbsentSubscriberDiagnosticSM  OPTIONAL, 
+    --unused:- - If received additionalAbsentSubscriberDiagnosticSM is for GPRS 
+    --unused:- - If DeliveryOutcomeIndicator is set, then AdditionalAbsentSubscriberDiagnosticSM 
+    --unused:- - shall be absent 
+    --unused:ip-sm-gw-Indicator                     [6]  NULL                          OPTIONAL, 
+    --unused:- - the ip-sm-gw indicator indicates by its presence that sm-deliveryOutcome 
+    --unused:- - is for delivery via IMS 
+    --unused:- - If present, deliveryOutcomeIndicator shall be absent. 
+    --unused:ip-sm-gw-sm-deliveryOutcome            [7]  SM-DeliveryOutcome            OPTIONAL, 
+    --unused:- - If received ip-sm-gw-sm-deliveryOutcome is for delivery via IMS 
+    --unused:- - If ip-sm-gw-Indicator is set, then ip-sm-gw-sm-deliveryOutcome shall be absent 
+    --unused:ip-sm-gw-absentSubscriberDiagnosticSM  [8]   AbsentSubscriberDiagnosticSM OPTIONAL 
+    --unused:- - If received ip-sm-gw-sm-absentSubscriberDiagnosticSM is for delivery via IMS 
+    --unused:- - If ip-sm-gw-Indicator is set, then ip-sm-gw-sm-absentSubscriberDiagnosticSM 
+    --unused:- - shall be absent 
+} 
+
+SM-DeliveryOutcome ::= ENUMERATED { 
+    memoryCapacityExceeded  (0), 
+    absentSubscriber  (1), 
+    successfulTransfer  (2)} 
+
+-- ?* ReportSM-DeliveryStatusRes ::= SEQUENCE { 
+--     storedMSISDN                            ISDN-AddressString                 OPTIONAL, 
+--     extensionContainer                      ExtensionContainer                 OPTIONAL, 
+--     ...} 
+
+--unused:ReportSM-DeliveryStatusRes ::= CHOICE {
+--unused:	status [UNIVERSAL 16] SEQUENCE { 
+--unused:        storedMSISDN       ISDN-AddressString OPTIONAL,
+--unused:        extensionContainer ExtensionContainer OPTIONAL,
+--unused:        ...},
+--unused:	storedMSISDN [UNIVERSAL 4] ISDN-AddressString
+--unused:	}
+
+AlertServiceCentreArg ::= SEQUENCE { 
+    msisdn                                  ISDN-AddressString, 
+    serviceCentreAddress                    AddressString, 
+    ...} 
+
+InformServiceCentreArg ::= SEQUENCE { 
+    storedMSISDN                            ISDN-AddressString                 OPTIONAL, 
+    --unused:mw-Status MW-Status                                                        OPTIONAL, 
+    --unused:extensionContainer                      ExtensionContainer                 OPTIONAL, 
+    ... --unused:, 
+    --unused:absentSubscriberDiagnosticSM            AbsentSubscriberDiagnosticSM       OPTIONAL, 
+    --unused:additionalAbsentSubscriberDiagnosticSM  [0]   AbsentSubscriberDiagnosticSM OPTIONAL-- } 
+    -- additionalAbsentSubscriberDiagnosticSM may be present only if 
+    -- absentSubscriberDiagnosticSM is present. 
+    -- if included, additionalAbsentSubscriberDiagnosticSM is for GPRS and 
+    -- absentSubscriberDiagnosticSM is for non-GPRS 
+
+--unused:MW-Status ::= BIT STRING { 
+--unused:    sc-AddressNotIncluded  (0), 
+--unused:    mnrf-Set  (1), 
+--unused:    mcef-Set  (2) , 
+--unused:    mnrg-Set     (3)} (SIZE (6..16)) 
+    -- exception handling: 
+    -- bits 4 to 15 shall be ignored if received and not understood 
+    
+ReadyForSM-Arg ::= SEQUENCE { 
+    imsi                                    [0] IMSI, 
+    alertReason                             AlertReason,             --unused
+    --unused:alertReasonIndicator                    NULL                       OPTIONAL, 
+    --unused:- - alertReasonIndicator is set only when the alertReason 
+    --unused:- - sent to HLR is for GPRS 
+    --unused:extensionContainer                      ExtensionContainer         OPTIONAL, 
+    ...--unused:, 
+    --unused:additionalAlertReasonIndicator          [1] NULL                   OPTIONAL 
+    --unused:- - additionalAlertReasonIndicator is set only when the alertReason 
+    --unused:- - sent to HLR is for IP-SM-GW 
+    } 
+
+--unused:ReadyForSM-Res ::= SEQUENCE { 
+--unused:    extensionContainer ExtensionContainer OPTIONAL, 
+--unused:    ...} 
+
+AlertReason ::= ENUMERATED { 
+    ms-Present  (0), 
+    memoryAvailable  (1)} 
+
+--unused:MT-ForwardSM-VGCS-Arg ::= SEQUENCE { 
+--unused:    asciCallReference  ASCI-CallReference, 
+--unused:    sm-RP-OA           SM-RP-OA, 
+--unused:    sm-RP-UI           SignalInfo, 
+--unused:    - -unused:extensionContainer ExtensionContainer OPTIONAL, 
+--unused:    ...} 
+
+--unused:MT-ForwardSM-VGCS-Res ::= SEQUENCE { 
+--unused:    sm-RP-UI           [0] SignalInfo         OPTIONAL, 
+--unused:    dispatcherList     [1] DispatcherList     OPTIONAL, 
+--unused:    - -unused:ongoingCall        NULL                   OPTIONAL, 
+--unused:    - -unused:extensionContainer [2] ExtensionContainer OPTIONAL, 
+--unused:    ...} 
+
+--unused:DispatcherList ::= 
+--unused:    SEQUENCE SIZE (1..maxNumOfDispatchers) OF 
+--unused:        ISDN-AddressString 
+
+--unused:maxNumOfDispatchers        INTEGER ::= 5 
+
+END

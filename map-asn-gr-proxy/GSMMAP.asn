@@ -1,0 +1,709 @@
+--          Expanded ASN1 Module 'MAP-Protocol'          
+--SIEMENS ASN.1 Compiler       R5.70  (Production_5.70)    
+--            Date: 2003-09-04 Time: 14:14:00            
+-- Updated to version 3GPP TS 29.002 V7.5.0 (2006-09) Release 7
+-- $Id$
+
+GSM-MAP{ 0 identified-organization (4) etsi (0) mobileDomain (0) gsm-Network (1) modules (3) map-Protocol (4) version5 (5) }
+
+DEFINITIONS
+
+IMPLICIT TAGS
+
+::=
+
+BEGIN
+
+
+-- Must import data types for the "old" asn1 defs collected here.
+IMPORTS
+	AddressString,
+	--unused:BasicServiceCode,
+	--unused:ExternalSignalInfo,
+	GlobalCellId,
+	ISDN-AddressString,
+	IMSI,
+	--unused:IMSI-WithLMSI,
+	LMSI,
+	ProtocolId,
+	SignalInfo, 
+        SubscriberIdentity
+FROM MAP-CommonDataTypes {
+   itu-t identified-organization (4) etsi (0) mobileDomain (0)
+   gsm-Network (1) modules (3) map-CommonDataTypes (18) --version11 (11)-- version13 (13)}
+
+	ExtensionContainer
+FROM MAP-ExtensionDataTypes {
+   itu-t identified-organization (4) etsi (0) mobileDomain (0)
+   gsm-Network (1) modules (3) map-ExtensionDataTypes (21) --version11 (11)-- version13 (13)}
+
+   --unused:CUG-CheckInfo,
+   --unused:NumberOfForwarding,
+   RoutingInfo
+FROM MAP-CH-DataTypes {
+   itu-t identified-organization (4) etsi (0) mobileDomain (0)
+   gsm-Network (1) modules (3) map-CH-DataTypes (13) --version11 (11)-- version13 (13)}
+
+  RAND,
+  SRES,
+  Kc --unused:,
+  --unused:AuthenticationTripletV1, - -unused:   TripletList,
+--unused:  SubscriberData - -unused:   Category
+FROM MAP-MS-DataTypes {
+   itu-t identified-organization (4) etsi (0) mobileDomain (0)
+   gsm-Network (1) modules (3) map-MS-DataTypes (11) version13 (13)}
+;
+
+-- ROS def's
+-- Module Remote-Operations-Apdus (H.450.1:02/1998)
+--Remote-Operations-Apdus {itu-t recommendation h 450 1 version1(0)
+--  remote-operations-apdus(11)} DEFINITIONS AUTOMATIC TAGS ::=
+--BEGIN
+
+--unused:Component ::=	CHOICE {
+--unused:				invoke				[1] Invoke,
+--unused:				returnResultLast	[2] ReturnResult,
+--unused:				returnError			[3] ReturnError,
+--unused:				reject				[4] Reject,
+--unused:- - TCAP adds returnResultNotLast to allow for the segmentation of a result.
+--unused:				returnResultNotLast	[7] ReturnResult
+--unused:}
+
+--unused:Invoke ::=		SEQUENCE {
+--unused:				invokeID			InvokeIdType,
+--unused:				linkedID			[0] InvokeIdType OPTIONAL,
+--unused:				opCode				MAP-OPERATION,
+--unused:				invokeparameter	 	InvokeParameter OPTIONAL
+--unused:}
+--unused:InvokeParameter ::= ANY
+
+ 
+-- ANY is filled by the single ASN.1 data type following the keyword PARAMETER or the keyword ARGUMENT
+-- in the type definition of a particular operation.
+
+--unused:ReturnResult ::=	SEQUENCE {
+--unused:				invokeID				InvokeIdType,
+--unused:				resultretres			SEQUENCE {
+--unused:				opCode					MAP-OPERATION,
+--unused:				returnparameter			ReturnResultParameter OPTIONAL
+--unused:				} OPTIONAL
+--unused:			}
+--unused:
+--unused:ReturnResultParameter ::= ANY
+
+-- ANY is filled by the single ASN.1 data type following the keyword RESULT in the type definition
+-- of a particular operation.
+
+--unused:ReturnError ::=	SEQUENCE {
+--unused:				invokeID				InvokeIdType,
+--unused:				errorCode				MAP-ERROR,
+--unused:				parameter				ReturnErrorParameter  OPTIONAL }
+
+--unused:ReturnErrorParameter ::= ANY
+ 
+-- ANY is filled by the single ASN.1 data type following the keyword PARAMETER in the type definition
+-- of a particular error.
+
+--unused:Reject ::=		SEQUENCE {
+--unused:				invokeIDRej CHOICE {
+--unused:					derivable			InvokeIdType,
+--unused:					not-derivable		NULL },
+--unused:				problem CHOICE {
+--unused:					generalProblem		[0] GeneralProblem,
+--unused:					invokeProblem		[1] InvokeProblem,
+--unused:					returnResultProblem	[2] ReturnResultProblem,
+--unused:					returnErrorProblem	[3] ReturnErrorProblem } }
+--unused:
+--unused:InvokeIdType ::=	INTEGER (-128..127)
+--unused:
+--unused:
+--unused:MAP-OPERATION	::=	CHOICE {
+--unused:							localValue OperationLocalvalue,
+--unused:							globalValue OBJECT IDENTIFIER } 
+
+GSMMAPOperationLocalvalue ::= INTEGER{
+	updateLocation (2),
+	cancelLocation (3),
+	provideRoamingNumber (4),
+	noteSubscriberDataModified (5),
+	resumeCallHandling (6),
+	insertSubscriberData (7),
+	deleteSubscriberData (8),
+	sendParameters (9),
+	registerSS (10),
+	eraseSS (11),
+	activateSS (12),
+	deactivateSS (13),
+	interrogateSS (14),
+	authenticationFailureReport (15),
+	notifySS (16),
+	registerPassword (17),
+	getPassword (18),
+	processUnstructuredSS-Data (19),
+    releaseResources (20),
+    mt-ForwardSM-VGCS (21),
+	sendRoutingInfo (22),
+	updateGprsLocation (23),
+	sendRoutingInfoForGprs (24),
+	failureReport (25),
+	noteMsPresentForGprs (26),
+	--unAllocated (27),
+	performHandover (28),
+	sendEndSignal (29),
+	performSubsequentHandover (30),
+	provideSIWFSNumber (31),
+	sIWFSSignallingModify (32),
+	processAccessSignalling (33),
+	forwardAccessSignalling (34),
+	noteInternalHandover (35),
+	--unAllocated (36),
+	reset (37),
+	forwardCheckSS (38),
+	prepareGroupCall (39),
+	sendGroupCallEndSignal (40),
+	processGroupCallSignalling (41),
+	forwardGroupCallSignalling (42),
+	checkIMEI (43),
+	mt-forwardSM (44),
+	sendRoutingInfoForSM (45),
+	mo-forwardSM (46),
+	reportSM-DeliveryStatus (47),
+	noteSubscriberPresent (48),
+	alertServiceCentreWithoutResult (49),
+	activateTraceMode (50),
+	deactivateTraceMode (51),
+	traceSubscriberActivity (52),
+	--unAllocated (53),
+	beginSubscriberActivity (54),
+	sendIdentification (55),
+	sendAuthenticationInfo (56),
+	restoreData (57),
+	sendIMSI (58),
+	processUnstructuredSS-Request (59),
+	unstructuredSS-Request (60),
+	unstructuredSS-Notify (61),
+	anyTimeSubscriptionInterrogation (62),
+	informServiceCentre (63),
+	alertServiceCentre (64),
+	anyTimeModification (65),
+	readyForSM (66),
+	purgeMS (67),
+	prepareHandover (68),
+	prepareSubsequentHandover (69),
+	provideSubscriberInfo (70),
+	anyTimeInterrogation (71),
+	ss-InvocationNotification (72),
+	setReportingState (73),
+	statusReport (74),
+	remoteUserFree (75),
+	registerCC-Entry (76),
+	eraseCC-Entry (77),
+	secureTransportClass1 (78),
+	secureTransportClass2 (79),
+	secureTransportClass3 (80),
+	secureTransportClass4 (81),
+	--unAllocated (82),
+    provideSubscriberLocation (83),
+    sendGroupCallInfo (84),
+	sendRoutingInfoForLCS (85),
+	subscriberLocationReport (86),
+	ist-Alert (87),
+	ist-Command (88),
+	noteMM-Event (89),
+	--unAllocated (90),
+	--unAllocated (91),
+	--unAllocated (92),
+	--unAllocated (93),
+	--unAllocated (94),
+	--unAllocated (95),
+	--unAllocated (96),
+	--unAllocated (97),
+	--unAllocated (98),
+	--unAllocated (99),
+	--unAllocated (100),
+	--unAllocated (101),
+	--unAllocated (102),
+	--unAllocated (103),
+	--unAllocated (104),
+	--unAllocated (105),
+	--unAllocated (106),
+	--unAllocated (107),
+	--unAllocated (108),
+	lcs-PeriodicLocationCancellation (109),
+	lcs-LocationUpdate (110),
+	lcs-PeriodicLocationRequest (111),
+	lcs-AreaEventCancellation (112),
+	lcs-AreaEventReport (113),
+	lcs-AreaEventRequest (114),
+	lcs-MOLR (115),
+	lcs-LocationNotification (116),
+	callDeflection (117),
+	userUserService (118),
+	accessRegisterCCEntry (119),
+	forwardCUG-Info (120),
+	splitMPTY (121),
+	retrieveMPTY (122),
+	holdMPTY(123),
+	buildMPTY (124),
+	forwardChargeAdvice(125),
+	explicitCT (126)
+        } 
+
+--unused:OperationLocalvalue ::= GSMMAPOperationLocalvalue
+
+--unused:MAP-ERROR	::=	CHOICE {
+--unused:			localValue LocalErrorcode,
+--unused:			globalValue OBJECT IDENTIFIER } 
+--unused:
+--unused:GSMMAPLocalErrorcode ::= INTEGER{
+--unused:	unknownSubscriber (1),
+--unused:	unknownBaseStation (2),
+--unused:	unknownMSC (3),
+--unused:	secureTransportError (4),
+--unused:	unidentifiedSubscriber (5),
+--unused:	absentSubscriberSM (6),
+--unused:	unknownEquipment (7),
+--unused:	roamingNotAllowed (8),
+--unused:	illegalSubscriber (9),
+--unused:	bearerServiceNotProvisioned (10),
+--unused:	teleserviceNotProvisioned (11),
+--unused:	illegalEquipment (12),
+--unused:	callBarred (13),
+--unused:	forwardingViolation (14),
+--unused:	cug-Reject (15),
+--unused:	illegalSS-Operation (16),
+--unused:	ss-ErrorStatus (17),
+--unused:	ss-NotAvailable (18),
+--unused:	ss-SubscriptionViolatio (19),
+--unused:	ss-Incompatibility (20),
+--unused:	facilityNotSupported (21),
+--unused:	ongoingGroupCall (22),
+--unused:	invalidTargetBaseStation (23),
+--unused:	noRadioResourceAvailable (24),
+--unused:	noHandoverNumberAvailable (25),
+--unused:	subsequentHandoverFailure (26),
+--unused:	absentSubscriber (27),
+--unused:	incompatibleTerminal (28),
+--unused:	shortTermDenial (29),
+--unused:	longTermDenial (30),
+--unused:	subscriberBusyForMT-SMS (31),
+--unused:	sm-DeliveryFailure (32),
+--unused:	messageWaitingListFull (33),
+--unused:	systemFailure (34),
+--unused:	dataMissing (35),
+--unused:	unexpectedDataValue (36),
+--unused:	pw-RegistrationFailur (37),
+--unused:	negativePW-Check (38),
+--unused:	noRoamingNumberAvailable (39),
+--unused:	tracingBufferFull (40),
+--unused:	targetCellOutsideGroupCallArea (42),
+--unused:	numberOfPW-AttemptsViolation (43),
+--unused:	numberChanged (44),
+--unused:	busySubscriber (45),
+--unused:	noSubscriberReply (46),
+--unused:	forwardingFailed (47),
+--unused:	or-NotAllowed (48),
+--unused:	ati-NotAllowed (49),
+--unused:	noGroupCallNumberAvailable (50),
+--unused:	resourceLimitation (51),
+--unused:	unauthorizedRequestingNetwork (52),
+--unused:	unauthorizedLCSClient (53),
+--unused:	positionMethodFailure (54),
+--unused:	unknownOrUnreachableLCSClient (58),
+--unused:	mm-EventNotSupported (59),
+--unused:	atsi-NotAllowed (60),
+--unused:	atm-NotAllowed (61),
+--unused:	informationNotAvailabl (62),
+--unused:	unknownAlphabe (71),
+--unused:	ussd-Busy (72)
+--unused:}
+--unused:
+--unused:LocalErrorcode ::= GSMMAPLocalErrorcode
+
+-- PROBLEMS
+
+--unused:GeneralProblem		::=	INTEGER {		unrecognizedComponent (0),
+--unused:								mistypedComponent (1),
+--unused:								badlyStructuredComponent (2) }
+--unused:
+--unused:InvokeProblem		::=	INTEGER {		duplicateInvokeID (0),
+--unused:								unrecognizedOperation (1),
+--unused:								mistypedParameter (2),
+--unused:								resourceLimitation (3),
+--unused:								initiatingRelease (4),
+--unused:								unrecognizedLinkedID (5),
+--unused:								linkedResponseUnexpected (6),
+--unused:								unexpectedLinkedOperation (7) }
+--unused:
+--unused:ReturnResultProblem	::=	INTEGER {		unrecognizedInvokeID (0),
+--unused:								returnResultUnexpected (1),
+--unused:								mistypedParameter (2) }
+--unused:
+--unused:ReturnErrorProblem	::=	INTEGER {		unrecognizedInvokeID (0),
+--unused:								returnErrorUnexpected (1),
+--unused:								unrecognizedError (2),
+--unused:								unexpectedError (3),
+--unused:								mistypedParameter (4) }
+
+
+
+--END
+
+Bss-APDU ::=  SEQUENCE {
+            protocolId			ProtocolId,
+            signalInfo           SignalInfo, 
+            extensionContainer   ExtensionContainer OPTIONAL, 
+            ... } 
+
+--unused: - -provideSIWFSNumber OPERATION
+--unused: - -   ARGUMENT
+--unused: 
+--unused: ProvideSIWFSNumberArg ::= SEQUENCE {
+--unused: 	gsm-BearerCapability	[0] ExternalSignalInfo,
+--unused: 	isdn-BearerCapability	[1] ExternalSignalInfo,
+--unused: 	call-Direction			[2] CallDirection,
+--unused: 	b-Subscriber-Address	[3] ISDN-AddressString,
+--unused: 	chosenChannel			[4] ExternalSignalInfo,
+--unused: 	lowerLayerCompatibility [5] ExternalSignalInfo OPTIONAL,
+--unused: 	highLayerCompatibility	[6] ExternalSignalInfo OPTIONAL,
+--unused: 	extensionContainer		[7] ExtensionContainer OPTIONAL,
+--unused: ...}
+--unused: - -   RESULT
+--unused: ProvideSIWFSNumberRes ::= SEQUENCE {
+--unused: 	sIWFSNumber				[0] ISDN-AddressString,
+--unused: 	extensionContainer		[1] ExtensionContainer OPTIONAL,
+--unused: ...}
+--unused: - -   ERRORS {
+--unused: - - resourceLimitation   localValue : 51, 
+--unused: - - dataMissing   localValue : 35, 
+--unused: - - unexpectedDataValue   localValue : 36, 
+--unused: - - systemFailure   localValue : 34}
+--unused: - - ::= localValue : 31
+
+--unused:CallDirection ::= OCTET STRING (SIZE (1))
+-- OCTET 1
+-- bit 1 (direction of call)
+-- 0 Mobile Originated Call (MOC)
+-- 1 Mobile Terminated Call (MTC)
+
+PurgeMSArgV2 ::= SEQUENCE {
+  imsi                 IMSI, 
+  --unused:vlr-Number           ISDN-AddressString OPTIONAL, 
+  ... }
+
+PrepareHO-ArgOld ::= SEQUENCE {
+         targetCellId           GlobalCellId OPTIONAL, 
+         ho-NumberNotRequired   NULL OPTIONAL, 
+         bss-APDU               Bss-APDU OPTIONAL, 
+         ... }
+
+--unused:PrepareHO-ResOld ::= SEQUENCE {
+--unused:         handoverNumber   ISDN-AddressString OPTIONAL, 
+--unused:         bss-APDU         Bss-APDU OPTIONAL, 
+--unused:         ... }
+
+--defined at MAP-MS-DataTypes: SendAuthenticationInfoResOld ::= SEQUENCE  ( SIZE( 1 .. 5 ) ) OF
+--defined at MAP-MS-DataTypes:          SEQUENCE {
+--defined at MAP-MS-DataTypes:             rand       RAND, 
+--defined at MAP-MS-DataTypes:             sres       SRES, 
+--defined at MAP-MS-DataTypes:             kc         Kc, 
+--defined at MAP-MS-DataTypes:             ... }
+
+--defined at MAP-MS-DataTypes: RAND ::= OCTET STRING (SIZE (16))
+
+--defined at MAP-MS-DataTypes: SRES ::= OCTET STRING (SIZE (4))
+
+--defined at MAP-MS-DataTypes: Kc ::= OCTET STRING (SIZE (8))
+
+--defined at MAP-MS-DataTypes: SendIdentificationResV2 ::= SEQUENCE {
+--defined at MAP-MS-DataTypes:   imsi				IMSI OPTIONAL,
+--defined at MAP-MS-DataTypes:   tripletList    	        - -TripletListold- - TripletList OPTIONAL,
+--defined at MAP-MS-DataTypes:   ...}
+
+--defined at MAP-MS-DataTypes:TripletListold ::= SEQUENCE SIZE (1..5) OF
+--defined at MAP-MS-DataTypes:				AuthenticationTriplet-v2
+--defined at MAP-MS-DataTypes:
+--defined at MAP-MS-DataTypes:AuthenticationTriplet-v2 ::= SEQUENCE {
+--defined at MAP-MS-DataTypes:	rand			RAND,
+--defined at MAP-MS-DataTypes:	sres			SRES,
+--defined at MAP-MS-DataTypes:	kc			Kc,
+--defined at MAP-MS-DataTypes:	...}
+
+--unused: - -sIWFSSignallingModify OPERATION
+--unused: - -   ARGUMENT
+--unused: SIWFSSignallingModifyArg ::= SEQUENCE {
+--unused: 	channelType			[0] ExternalSignalInfo OPTIONAL,
+--unused: 	chosenChannel		[1] ExternalSignalInfo OPTIONAL,
+--unused: 	extensionContainer	[2] ExtensionContainer OPTIONAL,
+--unused: ...}
+--unused: - -   RESULT
+--unused: SIWFSSignallingModifyRes ::= SEQUENCE {
+--unused: 	channelType			[0] ExternalSignalInfo OPTIONAL,
+--unused:     extensionContainer  [1] ExtensionContainer OPTIONAL,
+--unused:          ... }
+--unused: - -   ERRORS {
+--unused: - - resourceLimitation   localValue : 51, 
+--unused: - - dataMissing   localValue : 35, 
+--unused: - - unexpectedDataValue   localValue : 36, 
+--unused: - - systemFailure   localValue : 34}
+--unused: - - ::= localValue : 32
+--unused: 
+--unused: - - not used
+--unused: - - Ccbs-Monitoring ::= ENUMERATED {
+--unused: - -  stopMonitoring     ( 0 ), 
+--unused: - -  startMonitoring    ( 1 ), 
+--unused: - -  ...  }
+--unused: 
+--unused: - -setReportingState OPERATION
+--unused: - -   ARGUMENT
+
+
+--unused:NewPassword ::= NumericString (SIZE( 4 ) )
+
+--   ERRORS {
+-- systemFailure   localValue : 34, 
+-- dataMissing   localValue : 35, 
+-- unexpectedDataValue   localValue : 36, 
+-- callBarred   localValue : 13, 
+-- ss-SubscriptionViolation   localValue : 19, 
+-- pw-RegistrationFailure   localValue : 37, 
+-- negativePW-Check   localValue : 38, 
+-- numberOfPW-AttemptsViolation   localValue : 43}
+--LINKED {
+     -- getPassword   localValue : 18}
+-- ::= localValue : 17
+
+--unused: - -getPassword OPERATION
+--unused: - -   ARGUMENT
+--unused: - - GetPasswordArg is GuidanceInfo
+--unused: GetPasswordArg ::= ENUMERATED {
+--unused:          enterPW             ( 0 ), 
+--unused:          enterNewPW          ( 1 ), 
+--unused:          enterNewPW-Again    ( 2 ) }
+--unused: - -   RESULT
+--unused: CurrentPassword ::= NumericString (SIZE( 4 ) )
+--unused: - - ::= localValue : 18
+
+--registerCC-Entry OPERATION
+--   ARGUMENT
+
+--unused:SecureTransportArg ::= SEQUENCE {
+--unused:	securityHeader		SecurityHeader,
+--unused:	protectedPayload	ProtectedPayload OPTIONAL
+--unused:}
+
+--unused:SecureTransportErrorParam ::= SEQUENCE {
+--unused:	securityHeader		SecurityHeader,
+--unused:	protectedPayload	ProtectedPayload OPTIONAL
+--unused:}
+
+-- The protectedPayload carries the result of applying the security function
+-- defined in 3GPP TS 33.200 to the encoding of the argument of the securely
+-- transported operation
+
+--unused:SecureTransportRes ::= SEQUENCE {
+--unused:	securityHeader		SecurityHeader,
+--unused:	protectedPayload	ProtectedPayload OPTIONAL
+--unused:}
+-- The protectedPayload carries the result of applying the security function
+-- defined in 3GPP TS 33.200 to the encoding of the result of the securely
+-- transported operation
+
+--unused:SecurityHeader ::= SEQUENCE {
+--unused:	securityParametersIndex			SecurityParametersIndex,
+--unused:	originalComponentIdentifier		OriginalComponentIdentifier,
+--unused:	initialisationVector			InitialisationVector OPTIONAL,
+--unused:...}
+
+--unused:ProtectedPayload ::= OCTET STRING(SIZE(1.. 3438))
+-- In protection mode 0 (noProtection) the ProtectedPayload carries the transfer
+-- syntax value of the component parameter identified by the
+-- originalComponentIdentifier.
+-- In protection mode 1 (integrityAuthenticity) the protectedPayload carries
+-- the transfer syntax value of the component
+-- parameter identified by the originalComponentIdentifier, followed by
+-- the 32 bit integrity check value.
+-- The integrity check value is the result of applying the hash algorithm
+-- to the concatenation of the transfer syntax value of the SecurityHeader,
+-- and the transfer syntax value of the component parameter.
+-- In protection mode 2 (confidentialityIntegrityAuthenticity) the protected
+-- payload carries the encrypted transfer syntax
+-- value of the component parameter identified by the
+-- originalComponentIdentifier, followed by the 32 bit integrity check value.
+-- The integrity check value is the result of applying the hash algorithm
+-- to the concatenation of the transfer syntax value of the SecurityHeader,
+-- and the encrypted transfer syntax value of the component parameter.
+-- See 33.200.
+-- The length of the protectedPayload is adjusted according to the capabilities of
+-- the lower protocol layers
+
+--unused:SecurityParametersIndex ::= OCTET STRING (SIZE(4))
+
+--unused:InitialisationVector ::= OCTET STRING (SIZE(14))
+-- the internal structure is defined as follows:
+-- Octets 1 to 4 : TVP. The TVP is a 32 bit time stamp. Its value is binary coded
+-- and indicates the number of intervals of 100 milliseconds
+-- elapsed since 1st January 2002, 0:00:00 UTC
+-- Octets 5 to 10: NE-Id. The NE-Id uniquely identifies the sending network entity
+-- within the PLMN. It is the entity's E.164 number without CC and
+-- NDC. It is TBCD-coded, padded with zeros.
+-- Octets 11 to 14: PROP. This 32 bit value is used to make the
+-- InitialisationVector unique within the same TVP period.
+-- The content is not standardized.
+
+--unused:OriginalComponentIdentifier ::= CHOICE {
+--unused:	operationCode	[0] OperationCode,
+--unused:	errorCode		[1] ErrorCode,
+--unused:	userInfo		[2] NULL}
+--unused:
+--unused:OperationCode ::= CHOICE {
+--unused:	localValue INTEGER,
+--unused:	globalValue OBJECT IDENTIFIER}
+--unused:
+--unused:ErrorCode ::= CHOICE {
+--unused:	localValue INTEGER,
+--unused:	globalValue OBJECT IDENTIFIER}
+
+
+--PLMN_Data
+-- Alcatel Specific extension container
+--unused:PlmnContainer ::= [PRIVATE 2] SEQUENCE {
+--unused:	msisdn			[0] ISDN-AddressString OPTIONAL, 
+--unused:	category		[1] Category OPTIONAL,
+--unused:	basicService		BasicServiceCode OPTIONAL,
+--unused:	operatorSS-Code		[4] SEQUENCE ( SIZE( 1 .. 16 ) ) OF
+--unused:				OCTET STRING ( SIZE ( 1 ) ) OPTIONAL,
+--unused:	 ... 
+--unused:}
+
+--defined at MAP-MS-DataTypes:Category ::= OCTET STRING (SIZE (1))
+--defined at MAP-MS-DataTypes:	- - The internal structure is defined in ITU-T Rec Q.763.
+
+-- Special stuff from older spec's
+--ForwardSM OPERATION
+--   ARGUMENT
+ForwardSM-Arg ::= SEQUENCE {
+         sm-RP-DA             SM-RP-DAold, 
+         sm-RP-OA             SM-RP-OAold, 
+         sm-RP-UI             SignalInfo, 
+         --unused:moreMessagesToSend   NULL OPTIONAL, 
+         ... }
+-- In fact, the 3GPP uses SignalInfo instead, but it is used for SMS content decoding
+--Sm-RP-UI ::= OCTET STRING ( SIZE( 1 .. 200 ) )
+-- Must be locally defined as they are not exported from SM-datatypes
+SM-RP-DAold ::= CHOICE {
+	imsi			[0] IMSI,
+	lmsi			[1] LMSI,
+	serviceCentreAddressDA	[4] AddressString,
+	noSM-RP-DA	[5] NULL}
+
+SM-RP-OAold ::= CHOICE {
+	msisdn		[2] ISDN-AddressString,
+	serviceCentreAddressOA	[4] AddressString,
+	noSM-RP-OA	[5] NULL}
+
+-- Private extensions
+--unused:accessType-id	OBJECT IDENTIFIER ::=
+--unused:		{1 3 12 2 1107 3 66 1 1}
+--unused:	
+--unused:	- -iso (1)
+--unused:	- -identified-organization (3)
+--unused:	- -ecma (12)
+--unused:	- -member-company (2)
+--unused:	- -siemens-units (1107)
+--unused:	- -oen (3)
+--unused:	- -mn (66)
+--unused:	- -proprietary-extensions (1)
+--unused:	- -accessType (1)
+
+--unused:accessTypeNotAllowed-id	OBJECT IDENTIFIER ::=
+--unused:		{1 3 12 2 1107 3 66 1 2}
+--unused:	
+--unused:	- -iso (1)
+--unused:	- -identified-organization (3)
+--unused:	- -ecma (12)
+--unused:	- -member-company (2)
+--unused:	- -siemens-units (1107)
+--unused:	- -oen (3)
+--unused:	- -mn (66)
+--unused:	- -proprietary-extensions (1)
+--unused:	- -accessTypeNotAllowed (2)
+
+SendRoutingInfoArgV2 ::= SEQUENCE { 
+	msisdn				[0] ISDN-AddressString, 
+	--unused:cug-CheckInfo		[1] CUG-CheckInfo OPTIONAL, 
+-- cug-CheckInfo must be absent in version 1 
+	--unused:numberOfForwarding	[2] NumberOfForwarding OPTIONAL, 
+	--unused:networkSignalInfo	[10] ExternalSignalInfo OPTIONAL, 
+	...
+	} 
+
+SendRoutingInfoResV2 ::= SEQUENCE { 
+	imsi				IMSI, 
+	routingInfo			RoutingInfo, 
+	--unused:cug-CheckInfo		CUG-CheckInfo OPTIONAL, 
+-- cug-CheckInfo must be absent in version 1 
+	...
+	} 
+-- Removed from SS-DataTypes.asn in Rel 9.0.0
+BeginSubscriberActivityArg ::= SEQUENCE {
+    imsi            IMSI,
+    originatingEntityNumber ISDN-AddressString,
+    msisdn                  [PRIVATE 28] AddressString OPTIONAL,
+    ... }
+
+--sendIMSI  OPERATION ::= {				- -Timer m
+--  ARGUMENT
+--    ISDN-AddressString
+--  RESULT
+--    IMSI
+--  ERRORS {
+--    dataMissing |
+--    unexpectedDataValue |
+--    unknownSubscriber}
+--  CODE local:58 }
+
+-- sendParameters OPERATION ::= {
+--     ARGUMENT
+--         SendParametersArg
+--     RESULT
+--         SentParameterList
+--         - - optional
+--         - - nothing is returned, if no requested parameter is
+--         - - available or exists
+--     ERRORS {
+--         UnexpectedDataValue,
+--         UnknownSubscriber,
+--         UnidentifiedSubscriber}
+--     CODE    local:9 }
+
+--unused:Ki ::= OCTET STRING (SIZE (16)) 
+--unused:
+SendParametersArg ::= SEQUENCE {
+    subscriberId SubscriberIdentity,
+--unused:    requestParameterList RequestParameterList
+... }
+--unused:
+--unused:RequestParameter ::= ENUMERATED {
+--unused:    requestIMSI (0),
+--unused:    requestAuthenticationSet (1),
+--unused:    requestSubscriberData (2),
+--unused:    requestKi (4)}
+--unused:
+--unused:RequestParameterList ::= SEQUENCE SIZE (1..2) OF
+--unused:    RequestParameter
+--unused:
+--unused:SentParameter ::= CHOICE {
+--unused:    imsi              [0] IMPLICIT IMSI,
+--unused:    authenticationSet [1] IMPLICIT AuthenticationTripletV1,
+--unused:    subscriberData    [2] IMPLICIT SubscriberData,
+--unused:    ki                [4] IMPLICIT Ki}
+--unused:
+--unused:maxNumOfSentParameter INTEGER ::= 6
+--unused:    - - This NamedValue corresponds to the maximum number of
+--unused:    - - authentication set which may be returned by a HLR plus 1
+--unused:
+--unused:SentParameterList ::= SEQUENCE SIZE (1..maxNumOfSentParameter) OF
+--unused:    SentParameter
+
+END

@@ -1,0 +1,68 @@
+-- ETSI TS 129 002 V10.4.0 (2011-10)
+-- 17.7.11  Extension data types 
+
+MAP-ExtensionDataTypes {
+	itu-t identified-organization (4) etsi (0) mobileDomain (0)
+	gsm-Network (1) modules (3) map-ExtensionDataTypes (21) version13 (13)}
+
+DEFINITIONS
+
+IMPLICIT TAGS
+
+::=
+
+BEGIN
+
+EXPORTS
+	PrivateExtension,
+	ExtensionContainer--unused:,
+	--unused:SLR-ArgExtensionContainer
+	;
+
+
+-- IOC for private MAP extensions
+
+
+MAP-EXTENSION   ::= CLASS {
+	&ExtensionType      OPTIONAL,
+	&extensionId   OBJECT IDENTIFIER }
+	-- The length of the Object Identifier shall not exceed 16 octets and the
+	-- number of components of the Object Identifier shall not exceed 16
+
+-- data types
+
+ExtensionContainer  ::= SEQUENCE {
+	privateExtensionList  [0]PrivateExtensionList  OPTIONAL,
+	pcs-Extensions  [1]PCS-Extensions  OPTIONAL,
+	...}
+
+--unused:SLR-ArgExtensionContainer ::= SEQUENCE {
+--unused:	privateExtensionList  [0]PrivateExtensionList  OPTIONAL,
+--unused:	slr-Arg-PCS-Extensions  [1]SLR-Arg-PCS-Extensions  OPTIONAL,
+--unused:	...}
+
+PrivateExtensionList  ::= SEQUENCE SIZE (1..maxNumOfPrivateExtensions) OF
+	PrivateExtension
+
+PrivateExtension ::= SEQUENCE {
+	extId   MAP-EXTENSION.&extensionId
+		({ExtensionSet}),
+	extType   MAP-EXTENSION.&ExtensionType
+		({ExtensionSet}{@extId})  OPTIONAL}
+
+maxNumOfPrivateExtensions   INTEGER ::= 10
+
+ExtensionSet   MAP-EXTENSION ::=
+	{...
+	-- ExtensionSet is the set of all defined private extensions
+	}
+	-- Unsupported private extensions shall be discarded if received.
+
+PCS-Extensions  ::= SEQUENCE {
+	...}
+
+--unused:SLR-Arg-PCS-Extensions ::= SEQUENCE {
+--unused:	...,
+--unused:	na-ESRK-Request  [0] NULL   OPTIONAL }
+
+END
